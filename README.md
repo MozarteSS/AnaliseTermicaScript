@@ -4,7 +4,7 @@ Projeto de analise termica em Python usando Jupyter Notebook.
 
 ## Estrutura
 
-- `thermala_ analisys.ipynb`: notebook principal da analise.
+- `thermal_analysis.ipynb`: notebook principal da analise.
 - `requirements.txt`: dependencias Python do projeto.
 - `data/`: arquivos de entrada de dados (ignorado no Git por padrao).
 
@@ -15,9 +15,27 @@ Projeto de analise termica em Python usando Jupyter Notebook.
 
 ## Instalacao
 
+### Linux
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Windows (PowerShell)
+
+```powershell
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+### Windows (Prompt de Comando - CMD)
+
+```bat
+py -m venv .venv
+.venv\Scripts\activate.bat
 pip install -r requirements.txt
 ```
 
@@ -35,7 +53,7 @@ source .venv/bin/activate
 jupyter notebook
 ```
 
-3. Abra o arquivo `thermala_ analisys.ipynb` e execute as celulas na ordem.
+3. Abra o arquivo `thermal_analysis.ipynb` e execute as celulas na ordem.
 
 ## Dependencias
 
