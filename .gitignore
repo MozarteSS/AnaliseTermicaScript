@@ -1,5 +1,6 @@
 # Dados
 data/*
+!data/.gitkeep
 
 # Ambiente virtual
 .venv/

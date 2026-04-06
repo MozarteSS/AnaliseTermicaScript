@@ -45,8 +45,8 @@ def grafico_dtg(df, eixo_x='temperatura (C)', eixo_y1 ='massa (mg)', eixo_y2 = '
 
   # Cor para o primeiro eixo e gráfico (massa)
   cor_eixo_y1 = 'tab:blue'
-  ax1.set_xlabel(eixo_x)
-  ax1.set_ylabel(eixo_y1, color=cor_eixo_y1)
+  ax1.set_xlabel(eixo_x, fontsize=14)
+  ax1.set_ylabel(eixo_y1, color=cor_eixo_y1, fontsize=14)
   ax1.plot(df[eixo_x], df[eixo_y1], color=cor_eixo_y1, label=eixo_y1)
   ax1.tick_params(axis='y', labelcolor=cor_eixo_y1)
   ax1.grid(True, linestyle='--', alpha=0.6)
@@ -56,7 +56,7 @@ def grafico_dtg(df, eixo_x='temperatura (C)', eixo_y1 ='massa (mg)', eixo_y2 = '
 
   # Cor para o segundo eixo e gráfico (derivada)
   cor_eixo_y2 = 'tab:red'
-  ax2.set_ylabel(eixo_y2, color=cor_eixo_y2)
+  ax2.set_ylabel(eixo_y2, color=cor_eixo_y2, fontsize=14)
   ax2.plot(df[eixo_x], df[eixo_y2], color=cor_eixo_y2, label=eixo_y2)
   ax2.tick_params(axis='y', labelcolor=cor_eixo_y2)
 

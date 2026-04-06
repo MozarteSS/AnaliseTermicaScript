@@ -64,5 +64,6 @@ jupyter notebook
 
 ## Observacoes
 
-- O diretorio `data/` esta no `.gitignore`. Se quiser versionar os dados, ajuste o arquivo `.gitignore`.
+- O diretorio `data/*` esta no `.gitignore`. Se quiser versionar os dados, ajuste o arquivo `.gitignore`.
 - O notebook pode depender de arquivos da pasta `data/` com nomes especificos.
+- O nome do arquivo `.txt` lido (sem extensao) sera utilizado como nome do material no titulo dos graficos gerados.
