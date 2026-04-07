@@ -29,7 +29,7 @@ def dtg(df, smoth_DTG=75, smoth_TGA=75):
   df_1 = df.rename(columns={'sec': 'Tempo (s)','C': 'Temperatura (°C)','mg': 'Massa (mg)','DTG': 'DTG (%/°C)','uV': 'DTA (uV)','DTG_smoth': 'DTG_s (%/°C)'})
 
   # Verifique o resultado
-  print(df_1.head())
+  #print(df_1.head())
   #print(df_1.info())
   return df_1
 
@@ -42,7 +42,7 @@ def grafico_dtg(df, eixo_x='temperatura (C)', eixo_y1 ='massa (mg)', eixo_y2 = '
   df[eixo_x] = pd.to_numeric(df[eixo_x], errors='coerce')
 
   # Cria a figura e o primeiro eixo (ax1)
-  fig, ax1 = plt.subplots(figsize=(12, 6))
+  fig, ax1 = plt.subplots(figsize=(12, 6), dpi=300)
 
   # Cor para o primeiro eixo e gráfico (massa)
   cor_eixo_y1 = 'tab:blue'
