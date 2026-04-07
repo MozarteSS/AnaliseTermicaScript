@@ -69,7 +69,7 @@ def grafico_dtg(df, temp_i, temp_f,eixo_x='Temperatura (°C)', eixo_y1 ='Massa (
   ax2.tick_params(axis='y', labelcolor=cor_eixo_y2)
 
   # Adiciona um título geral e exibe o gráfico
-  plt.title(f'MATERIAL: {material}')
+  plt.title(f'MATERIAL: {material}', pad=20, fontsize=16)
   fig.tight_layout() # Ajusta o layout para evitar sobreposição
   plt.show()
 
