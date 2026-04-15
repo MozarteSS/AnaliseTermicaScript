@@ -23,6 +23,8 @@ def read_txt(
     data_dir: str = "data",
     smoth_DTG: int = 75,
     smoth_TGA: int = 75,
+    temperatura_inicial: int | None = None,
+    temperatura_final: int | None = None,
 ) -> dict[str, dict]:
     """
     Lê todos os arquivos .txt da pasta ``data_dir`` e retorna um dicionário
@@ -42,6 +44,12 @@ def read_txt(
     smoth_TGA : int
         Tamanho da janela de suavização (rolling mean) para a curva TGA.
         Padrão: ``75``.
+    temperatura_inicial : int, optional
+        Temperatura mínima (°C) para recorte do DataFrame via ``iloc``.
+        Se ``None``, mantém desde o início dos dados.
+    temperatura_final : int, optional
+        Temperatura máxima (°C) para recorte do DataFrame via ``iloc``.
+        Se ``None``, mantém até o fim dos dados.
 
     Returns
     -------
@@ -145,6 +153,17 @@ def read_txt(
         ]
         df_out = df[cols_out].copy()
 
+        # Recorte por temperatura usando iloc
+        if temperatura_inicial is not None:
+            idx_i = df_out[df_out["Temperatura (°C)"] >= temperatura_inicial].index[0]
+        else:
+            idx_i = 0
+        if temperatura_final is not None:
+            idx_f = df_out[df_out["Temperatura (°C)"] <= temperatura_final].index[-1]
+        else:
+            idx_f = len(df_out) - 1
+        df_out = df_out.iloc[idx_i : idx_f + 1].reset_index(drop=True)
+
         xlsx_path = os.path.join(data_dir, f"{sample_name}.xlsx")
         df_out.to_excel(xlsx_path, index=False)
 
@@ -162,8 +181,9 @@ def read_txt(
 
 def grafico_dtg(
     df: pd.DataFrame,
-    temp_i: float,
-    temp_f: float,
+    temp_i: int,
+    temp_f: int,
+    temp_interval: int = 50,
     eixo_x: str = "Temperatura (°C)",
     eixo_y1: str = "Massa_smoth (%)",
     eixo_y2: str = "DTG_smoth (%.°C\u207B\u00B9)",
@@ -197,22 +217,22 @@ def grafico_dtg(
     fig, ax1 = plt.subplots(figsize=(12, 6), dpi=300)
 
     cor_y1 = "tab:blue"
-    ax1.set_xlabel(eixo_x, fontsize=14)
-    ax1.set_ylabel(eixo_y1, color=cor_y1, fontsize=14)
+    ax1.set_xlabel(eixo_x, fontsize=14, labelpad=12)
+    ax1.set_ylabel(eixo_y1, color=cor_y1, fontsize=14, labelpad=12)
     ax1.plot(df[eixo_x], df[eixo_y1], color=cor_y1, label=eixo_y1)
     ax1.tick_params(axis="y", labelcolor=cor_y1)
     ax1.grid(True, color="gray", linestyle="--", linewidth=0.5, alpha=0.7)
 
     ax2 = ax1.twinx()
-    ax2.set_xlim(temp_i - 10, temp_f + 10)
-    ax2.set_xticks(np.arange(temp_i - 10, temp_f + 10, 50))
+    ax2.set_xlim(temp_i, temp_f)
+    ax2.set_xticks(np.arange(temp_i, temp_f, temp_interval))
 
     cor_y2 = "tab:red"
-    ax2.set_ylabel(eixo_y2, color=cor_y2, fontsize=14)
+    ax2.set_ylabel(eixo_y2, color=cor_y2, fontsize=14, labelpad=12)
     ax2.plot(df[eixo_x], df[eixo_y2], color=cor_y2, label=eixo_y2)
     ax2.tick_params(axis="y", labelcolor=cor_y2)
 
-    plt.title(f"MATERIAL: {material}", pad=20, fontsize=16)
+    plt.title(f"{material}", pad=20, fontsize=14)
     fig.tight_layout()
     plt.show()
 
@@ -225,13 +245,14 @@ def grafico_dtg(
 
 def process_final(
     df: pd.DataFrame,
-    temp_inicial: float | None = None,
-    temp_final: float | None = None,
+    temp_inicial: int = 25,
+    temp_final: int = 900,
+    temp_interval: int = 50,
     material_name: str = "material",
 ) -> pd.DataFrame:
     """
     Filtra o DataFrame por faixa de temperatura e gera os três gráficos
-    padrão de análise térmica: DTG×DTA, TGA×DTG e TGA×DTA.
+    padrão de análise térmica: DTG-DTA, TGA-DTG e TGA-DTA.
 
     Parameters
     ----------
@@ -266,17 +287,17 @@ def process_final(
     t_f = df_[col_temp].max() if temp_final is None else temp_final
 
     grafico_dtg(
-        df_, temp_i=t_i, temp_f=t_f,
+        df_, temp_i=t_i, temp_f=t_f, temp_interval=temp_interval,
         eixo_x=col_temp, eixo_y1=col_dtg, eixo_y2=col_dta,
         material=material_name,
     )
     grafico_dtg(
-        df_, temp_i=t_i, temp_f=t_f,
+        df_, temp_i=t_i, temp_f=t_f, temp_interval=temp_interval,
         eixo_x=col_temp, eixo_y1=col_massa, eixo_y2=col_dtg,
         material=material_name,
     )
     grafico_dtg(
-        df_, temp_i=t_i, temp_f=t_f,
+        df_, temp_i=t_i, temp_f=t_f, temp_interval=temp_interval,
         eixo_x=col_temp, eixo_y1=col_massa, eixo_y2=col_dta,
         material=material_name,
     )

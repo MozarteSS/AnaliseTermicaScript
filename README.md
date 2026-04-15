@@ -1,4 +1,5 @@
-# AnaliseTermicaScript
+# Tappujyn
+Thermal Analisys project python using jupyter notebook
 
 Scripts Python para leitura, processamento e visualização de dados de **análise termogravimétrica (TGA/DTG/DTA)**, compatíveis com arquivos exportados pelo software **DTG-60AH (Shimadzu)**.
 
